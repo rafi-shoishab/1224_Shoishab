@@ -1,0 +1,20 @@
+{% extends 'ManageCash/base.html' %}
+{% block content %}
+<div class="bg-white shadow rounded p-6">
+  <h2 class="text-2xl font-semibold mb-4">Profile</h2>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div>
+      <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+      <input type="text" name="username" id="username" value="{{ user.username }}" class="mt-1 block w-full px-3 py-2 border rounded-md" required>
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <input type="email" name="email" id="email" value="{{ user.email }}" class="mt-1 block w-full px-3 py-2 border rounded-md">
+    </div>
+    <div>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

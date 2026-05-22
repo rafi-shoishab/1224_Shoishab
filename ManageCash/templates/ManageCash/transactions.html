@@ -1,0 +1,28 @@
+{% extends 'ManageCash/base.html' %}
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">All Transactions</h2>
+<div class="overflow-x-auto bg-white rounded shadow">
+  <table class="min-w-full divide-y">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Type</th>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Description</th>
+        <th class="px-4 py-2 text-right text-sm text-gray-600">Amount</th>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Date</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      {% for it in items %}
+      <tr>
+        <td class="px-4 py-2">{{ it.type }}</td>
+        <td class="px-4 py-2">{% if it.type == 'income' %}{{ it.source }} {{ it.description }}{% else %}{{ it.description }}{% endif %}</td>
+        <td class="px-4 py-2 text-right">{{ it.amount }}</td>
+        <td class="px-4 py-2">{{ it.datetime }}</td>
+      </tr>
+      {% empty %}
+      <tr><td class="px-4 py-2" colspan="4">No transactions yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

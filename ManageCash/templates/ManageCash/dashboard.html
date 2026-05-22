@@ -1,0 +1,52 @@
+{% extends 'ManageCash/base.html' %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h2 class="text-2xl font-semibold">Dashboard</h2>
+  <div class="space-x-2">
+    <a class="px-4 py-2 bg-green-600 text-white rounded" href="{% url 'add_cash' %}">Add Cash</a>
+    <a class="px-4 py-2 bg-red-600 text-white rounded" href="{% url 'add_expense' %}">Add Expense</a>
+    <a class="px-4 py-2 bg-gray-200 text-gray-800 rounded" href="{% url 'transactions' %}">View All</a>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="p-4 bg-white rounded shadow">
+    <h5 class="text-sm text-gray-500">Total Income</h5>
+    <p class="text-2xl font-bold">{{ total_cash }}</p>
+  </div>
+  <div class="p-4 bg-white rounded shadow">
+    <h5 class="text-sm text-gray-500">Total Expense</h5>
+    <p class="text-2xl font-bold">{{ total_expense }}</p>
+  </div>
+  <div class="p-4 bg-white rounded shadow">
+    <h5 class="text-sm text-gray-500">Balance</h5>
+    <p class="text-2xl font-bold">{{ balance }}</p>
+  </div>
+</div>
+
+<h4 class="text-lg font-medium mb-2">Recent Transactions</h4>
+<div class="overflow-x-auto bg-white rounded shadow">
+  <table class="min-w-full divide-y">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Type</th>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Description</th>
+        <th class="px-4 py-2 text-right text-sm text-gray-600">Amount</th>
+        <th class="px-4 py-2 text-left text-sm text-gray-600">Date</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      {% for e in entries %}
+      <tr>
+        <td class="px-4 py-2">{{ e.type }}</td>
+        <td class="px-4 py-2">{% if e.type == 'income' %}{{ e.source }} {{ e.description }}{% else %}{{ e.description }}{% endif %}</td>
+        <td class="px-4 py-2 text-right">{{ e.amount }}</td>
+        <td class="px-4 py-2">{{ e.datetime }}</td>
+      </tr>
+      {% empty %}
+      <tr><td class="px-4 py-2" colspan="4">No transactions yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
