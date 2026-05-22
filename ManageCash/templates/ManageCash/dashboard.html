@@ -1,52 +1,143 @@
 {% extends 'ManageCash/base.html' %}
+
 {% block content %}
-<div class="flex items-center justify-between mb-6">
-  <h2 class="text-2xl font-semibold">Dashboard</h2>
-  <div class="space-x-2">
-    <a class="px-4 py-2 bg-green-600 text-white rounded" href="{% url 'add_cash' %}">Add Cash</a>
-    <a class="px-4 py-2 bg-red-600 text-white rounded" href="{% url 'add_expense' %}">Add Expense</a>
-    <a class="px-4 py-2 bg-gray-200 text-gray-800 rounded" href="{% url 'transactions' %}">View All</a>
-  </div>
-</div>
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-900">Dashboard</h2>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <div class="p-4 bg-white rounded shadow">
-    <h5 class="text-sm text-gray-500">Total Income</h5>
-    <p class="text-2xl font-bold">{{ total_cash }}</p>
-  </div>
-  <div class="p-4 bg-white rounded shadow">
-    <h5 class="text-sm text-gray-500">Total Expense</h5>
-    <p class="text-2xl font-bold">{{ total_expense }}</p>
-  </div>
-  <div class="p-4 bg-white rounded shadow">
-    <h5 class="text-sm text-gray-500">Balance</h5>
-    <p class="text-2xl font-bold">{{ balance }}</p>
-  </div>
-</div>
+      <p class="text-gray-500 mt-1 text-sm">Overview of your income, expenses, and balance</p>
+    </div>
 
-<h4 class="text-lg font-medium mb-2">Recent Transactions</h4>
-<div class="overflow-x-auto bg-white rounded shadow">
-  <table class="min-w-full divide-y">
-    <thead class="bg-gray-50">
-      <tr>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Type</th>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Description</th>
-        <th class="px-4 py-2 text-right text-sm text-gray-600">Amount</th>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Date</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y">
-      {% for e in entries %}
-      <tr>
-        <td class="px-4 py-2">{{ e.type }}</td>
-        <td class="px-4 py-2">{% if e.type == 'income' %}{{ e.source }} {{ e.description }}{% else %}{{ e.description }}{% endif %}</td>
-        <td class="px-4 py-2 text-right">{{ e.amount }}</td>
-        <td class="px-4 py-2">{{ e.datetime }}</td>
-      </tr>
-      {% empty %}
-      <tr><td class="px-4 py-2" colspan="4">No transactions yet.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-3">
+      <a href="{% url 'add_cash' %}" class="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition duration-200">+ Add Cash</a>
+
+      <a href="{% url 'add_expense' %}" class="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition duration-200">+ Add Expense</a>
+
+      <a href="{% url 'transactions' %}" class="px-5 py-3 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold rounded-xl shadow-sm transition duration-200">View All</a>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Total Income -->
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Income</p>
+
+          <h3 class="text-3xl font-bold text-emerald-600 mt-2">৳{{ total_cash }}</h3>
+        </div>
+
+        {% comment %} <div class="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center text-2xl">💰</div> {% endcomment %}
+      </div>
+    </div>
+
+    <!-- Total Expense -->
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Expense</p>
+
+          <h3 class="text-3xl font-bold text-red-600 mt-2">৳{{ total_expense }}</h3>
+        </div>
+
+        {% comment %} <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center text-2xl">📉</div> {% endcomment %}
+      </div>
+    </div>
+
+    <!-- Balance -->
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Current Balance</p>
+
+          <h3 class="text-3xl font-bold text-blue-600 mt-2">৳{{ balance }}</h3>
+        </div>
+
+        {% comment %} <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl">💳</div> {% endcomment %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+    <!-- Table Header -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+      <div>
+        <h4 class="text-xl font-semibold text-gray-900">Recent Transactions</h4>
+
+        <p class="text-sm text-gray-500 mt-1">Your latest income and expense activities</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+
+            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
+
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100 bg-white">
+          {% for e in entries %}
+            <tr class="hover:bg-gray-50 transition duration-150">
+              <!-- Type -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                {% if e.type == 'income' %}
+                  <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">Income</span>
+                {% else %}
+                  <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Expense</span>
+                {% endif %}
+              </td>
+
+              <!-- Description -->
+              <td class="px-6 py-4 text-sm text-gray-700">
+                {% if e.type == 'income' %}
+                  <span class="font-medium">{{ e.source }}</span>
+                  {% if e.description %}
+                    - {{ e.description }}
+                  {% endif %}
+                {% else %}
+                  {{ e.description }}
+                {% endif %}
+              </td>
+
+              <!-- Amount -->
+              <td class="px-6 py-4 text-right whitespace-nowrap">
+                {% if e.type == 'income' %}
+                  <span class="text-emerald-600 font-semibold">+৳{{ e.amount }}</span>
+                {% else %}
+                  <span class="text-red-600 font-semibold">-৳{{ e.amount }}</span>
+                {% endif %}
+              </td>
+
+              <!-- Date -->
+              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ e.datetime }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4" class="px-6 py-16 text-center">
+                <div class="flex flex-col items-center">
+                  {% comment %} <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-3xl mb-4">📄</div> {% endcomment %}
+
+                  <h3 class="text-lg font-semibold text-gray-700">No transactions yet</h3>
+
+                  <p class="text-sm text-gray-500 mt-1">Start by adding your first income or expense</p>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}

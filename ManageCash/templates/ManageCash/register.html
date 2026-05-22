@@ -1,28 +1,76 @@
 {% extends 'ManageCash/base.html' %}
+
 {% block content %}
-<div class="bg-white shadow rounded p-6">
-  <h2 class="text-2xl font-semibold mb-4">Register</h2>
-  <form method="post" class="space-y-4">
-    {% csrf_token %}
-    <div>
-      <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-      <input type="text" name="username" id="username" class="mt-1 block w-full px-3 py-2 border rounded-md" required>
+  <div class="min-h-[80vh] flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-md">
+      <!-- Register Card -->
+      <div class="bg-white border border-gray-100 rounded-3xl shadow-xl overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-emerald-600 to-green-500 px-8 py-8 text-center">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-white/20 flex items-center justify-center text-3xl mb-4">🚀</div>
+
+          <h2 class="text-3xl font-bold text-white">Create Account</h2>
+
+          <p class="text-green-100 mt-2 text-sm">Start managing your finances professionally</p>
+        </div>
+
+        <!-- Form -->
+        <form method="post" class="p-8 space-y-5">
+          {% csrf_token %}
+
+          <!-- Username -->
+          <div>
+            <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+
+            <input type="text" name="username" id="username" placeholder="Choose a username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200" required />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+
+            <input type="email" name="email" id="email" placeholder="Enter your email" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200" />
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+
+            <input type="password" name="password" id="password" placeholder="Create a secure password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200" required />
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <label for="confirm_password" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Re-enter your password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition duration-200" required />
+          </div>
+
+          <!-- Terms -->
+          <div class="flex items-start gap-3">
+            <input type="checkbox" required class="mt-1 w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+
+            <p class="text-sm text-gray-600">
+              I agree to the
+              <a href="#" class="text-emerald-600 font-medium hover:text-emerald-700">Terms & Conditions</a>
+              and
+              <a href="#" class="text-emerald-600 font-medium hover:text-emerald-700">Privacy Policy</a>
+            </p>
+          </div>
+
+          <!-- Button -->
+          <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition duration-200">Create Account</button>
+        </form>
+
+        <!-- Footer -->
+        <div class="px-8 pb-8 text-center">
+          <p class="text-sm text-gray-600">
+            Already have an account?
+
+            <a href="{% url 'login' %}" class="text-emerald-600 hover:text-emerald-700 font-semibold">Login</a>
+          </p>
+        </div>
+      </div>
     </div>
-    <div>
-      <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-      <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border rounded-md">
-    </div>
-    <div>
-      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-      <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border rounded-md" required>
-    </div>
-    <div>
-      <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-      <input type="password" name="confirm_password" id="confirm_password" class="mt-1 block w-full px-3 py-2 border rounded-md" required>
-    </div>
-    <div>
-      <button class="w-full bg-blue-600 text-white px-4 py-2 rounded" type="submit">Register</button>
-    </div>
-  </form>
-</div>
+  </div>
 {% endblock %}

@@ -1,28 +1,109 @@
 {% extends 'ManageCash/base.html' %}
+
 {% block content %}
-<h2 class="text-2xl font-semibold mb-4">All Transactions</h2>
-<div class="overflow-x-auto bg-white rounded shadow">
-  <table class="min-w-full divide-y">
-    <thead class="bg-gray-50">
-      <tr>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Type</th>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Description</th>
-        <th class="px-4 py-2 text-right text-sm text-gray-600">Amount</th>
-        <th class="px-4 py-2 text-left text-sm text-gray-600">Date</th>
-      </tr>
-    </thead>
-    <tbody class="divide-y">
-      {% for it in items %}
-      <tr>
-        <td class="px-4 py-2">{{ it.type }}</td>
-        <td class="px-4 py-2">{% if it.type == 'income' %}{{ it.source }} {{ it.description }}{% else %}{{ it.description }}{% endif %}</td>
-        <td class="px-4 py-2 text-right">{{ it.amount }}</td>
-        <td class="px-4 py-2">{{ it.datetime }}</td>
-      </tr>
-      {% empty %}
-      <tr><td class="px-4 py-2" colspan="4">No transactions yet.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-gray-900">All Transactions</h2>
+
+      <p class="text-gray-500 mt-1 text-sm">View and manage all your income and expense records</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-3">
+      <a href="{% url 'add_cash' %}" class="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition duration-200">+ Add Cash</a>
+
+      <a href="{% url 'add_expense' %}" class="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition duration-200">+ Add Expense</a>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+    <!-- Table Top -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+      <div>
+        <h3 class="text-xl font-semibold text-gray-900">Transaction History</h3>
+
+        <p class="text-sm text-gray-500 mt-1">Complete list of all financial activities</p>
+      </div>
+    </div>
+
+    <!-- Responsive Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <!-- Table Head -->
+        <thead class="bg-gray-50 border-b border-gray-100">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
+
+            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
+
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+          </tr>
+        </thead>
+
+        <!-- Table Body -->
+        <tbody class="divide-y divide-gray-100 bg-white">
+          {% for it in items %}
+            <tr class="hover:bg-gray-50 transition duration-150">
+              <!-- Type -->
+              <td class="px-6 py-4 whitespace-nowrap">
+                {% if it.type == 'income' %}
+                  <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">Income</span>
+                {% else %}
+                  <span class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Expense</span>
+                {% endif %}
+              </td>
+
+              <!-- Description -->
+              <td class="px-6 py-4 text-sm text-gray-700">
+                {% if it.type == 'income' %}
+                  <span class="font-medium">{{ it.source }}</span>
+
+                  {% if it.description %}
+                    - {{ it.description }}
+                  {% endif %}
+                {% else %}
+                  {{ it.description }}
+                {% endif %}
+              </td>
+
+              <!-- Amount -->
+              <td class="px-6 py-4 text-right whitespace-nowrap">
+                {% if it.type == 'income' %}
+                  <span class="text-emerald-600 font-semibold">+৳{{ it.amount }}</span>
+                {% else %}
+                  <span class="text-red-600 font-semibold">-৳{{ it.amount }}</span>
+                {% endif %}
+              </td>
+
+              <!-- Date -->
+              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ it.datetime }}</td>
+            </tr>
+          {% empty %}
+            <!-- Empty State -->
+            <tr>
+              <td colspan="4" class="px-6 py-20 text-center">
+                <div class="flex flex-col items-center">
+                  <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center text-4xl mb-5">📂</div>
+
+                  <h3 class="text-xl font-semibold text-gray-700">No Transactions Found</h3>
+
+                  <p class="text-sm text-gray-500 mt-2 max-w-sm">You haven't added any income or expense records yet. Start tracking your finances now.</p>
+
+                  <div class="flex flex-wrap gap-3 mt-6">
+                    <a href="{% url 'add_cash' %}" class="px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-sm transition duration-200">Add Cash</a>
+
+                    <a href="{% url 'add_expense' %}" class="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl shadow-sm transition duration-200">Add Expense</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% endblock %}
