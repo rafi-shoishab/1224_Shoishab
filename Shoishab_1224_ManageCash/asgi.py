@@ -1,5 +1,5 @@
 """
-ASGI config for Name_ID_ManageCash project.
+ASGI config for Shoishab_1224_ManageCash project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Name_ID_ManageCash.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Shoishab_1224_ManageCash.settings')
 
 application = get_asgi_application()
